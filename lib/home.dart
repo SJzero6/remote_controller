@@ -216,20 +216,6 @@ class _MqttclientState extends State<Mqttclient> {
     return 0;
   }
 
-  void Forward() {
-    const topic = 'motor';
-    final make = MqttClientPayloadBuilder();
-    make.addString('F');
-    client.publishMessage(topic, MqttQos.atLeastOnce, make.payload!);
-  }
-
-  void Backward() {
-    const topic = 'motor';
-    final make = MqttClientPayloadBuilder();
-    make.addString('B');
-    client.publishMessage(topic, MqttQos.atLeastOnce, make.payload!);
-  }
-
   void Left() {
     const topic = 'motor';
     final make = MqttClientPayloadBuilder();
@@ -241,6 +227,20 @@ class _MqttclientState extends State<Mqttclient> {
     const topic = 'motor';
     final make = MqttClientPayloadBuilder();
     make.addString('R');
+    client.publishMessage(topic, MqttQos.atLeastOnce, make.payload!);
+  }
+
+  void Forward() {
+    const topic = 'motor';
+    final make = MqttClientPayloadBuilder();
+    make.addString('F');
+    client.publishMessage(topic, MqttQos.atLeastOnce, make.payload!);
+  }
+
+  void Backward() {
+    const topic = 'motor';
+    final make = MqttClientPayloadBuilder();
+    make.addString('B');
     client.publishMessage(topic, MqttQos.atLeastOnce, make.payload!);
   }
 }
