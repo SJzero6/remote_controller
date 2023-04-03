@@ -13,6 +13,8 @@ class Mqttclient extends StatefulWidget {
 }
 
 class _MqttclientState extends State<Mqttclient> {
+  bool isconnected = false;
+
   static const url = 'alq5vzvrt1h0b-ats.iot.ap-northeast-1.amazonaws.com';
 
   static const port = 8883;
@@ -24,6 +26,7 @@ class _MqttclientState extends State<Mqttclient> {
   @override
   void initState() {
     _connectMQTT();
+
     // TODO: implement initState
   }
 
@@ -34,147 +37,147 @@ class _MqttclientState extends State<Mqttclient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-            // SingleChildScrollView(
-            //   child: Stack(children: [
-            //     Container(
-            //       height: MediaQuery.of(context).size.height,
-            //       width: MediaQuery.of(context).size.width,
-            //       color: Colors.black,
-            //       child: StreamBuilder(
-            //           stream: client.updates,
-            //           builder: ((context, snapshot) {
-            //             if (!snapshot.hasData) {
-            //               // print("sooraj");
-            //               return Center(
-            //                 child: CircularProgressIndicator(
-            //                   valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-            //                 ),
-            //               );
-            //             } else {
-            //               //print("iam here");
-            //               final mqttmss = snapshot.data
-            //                   as List<MqttReceivedMessage<MqttMessage?>>?;
-            //               final recMess = mqttmss![0].payload as MqttPublishMessage;
-            //               print(recMess.payload.message);
-            //               imgs.Image jpgimage =
-            //                   imgs.decodeJpg(recMess.payload.message)!;
+        body: SingleChildScrollView(
+            child: Stack(children: [
+      Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        color: Colors.black,
+        child: StreamBuilder(
+            stream: client.updates,
+            builder: ((context, snapshot) {
+              if (!snapshot.hasData) {
+                print("sooraj");
+                return Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                  ),
+                );
+              } else {
+                print("iam here");
+                final mqttmss =
+                    snapshot.data as List<MqttReceivedMessage<MqttMessage?>>?;
+                final recMess = mqttmss![0].payload as MqttPublishMessage;
+                print(recMess.payload.message);
+                imgs.Image jpgimage =
+                    imgs.decodeJpg(recMess.payload.message) as imgs.Image;
 
-            //               print(
-            //                   'img width = ${jpgimage.width}, height = ${jpgimage.height}');
+                print(
+                    'img width = ${jpgimage.width}, height = ${jpgimage.height}');
 
-            //               return Image.memory(
-            //                 imgs.encodeJpg(jpgimage) as Uint8List,
-            //                 gaplessPlayback: true,
-            //               );
-            //             }
-            //           })),
-            //     ),
-            Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          height: 400,
-          width: 125,
-          //color: Colors.amber,
-          child: Stack(children: [
-            Positioned(
-              top: 160,
-              left: 20,
-              child: Container(
-                child: Column(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => Forward(),
-                      child: Image.asset(
-                        'assets/images/up (2).png',
-                        height: 50,
+                return Image.memory(
+                  imgs.encodeJpg(jpgimage) as Uint8List,
+                  gaplessPlayback: true,
+                );
+              }
+            })),
+      ),
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            height: 400,
+            width: 125,
+            //color: Colors.amber,
+            child: Stack(children: [
+              Positioned(
+                top: 160,
+                left: 20,
+                child: Container(
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => Forward(),
+                        child: Image.asset(
+                          'assets/images/up (2).png',
+                          height: 50,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 10,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(27),
+                        ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white54,
-                        elevation: 10,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(27),
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Backward(),
-                      child: Image.asset(
-                        "assets/images/down (2).png",
-                        height: 50,
+                      ElevatedButton(
+                        onPressed: () => Backward(),
+                        child: Image.asset(
+                          "assets/images/down (2).png",
+                          height: 50,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 10,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(27),
+                        ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white54,
-                        elevation: 10,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(27),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ]),
-        ),
-        SizedBox(
-          height: 400,
-          width: 250,
-          // color: Colors.amber,
-          child: Stack(children: [
-            Positioned(
-              top: 255,
-              left: 10,
-              child: Container(
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => Left(),
-                      child: Image.asset(
-                        'assets/images/left (2).png',
-                        height: 50,
+            ]),
+          ),
+          SizedBox(
+            height: 400,
+            width: 250,
+            // color: Colors.amber,
+            child: Stack(children: [
+              Positioned(
+                top: 255,
+                left: 10,
+                child: Container(
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => Left(),
+                        child: Image.asset(
+                          'assets/images/left (2).png',
+                          height: 50,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 10,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(27),
+                        ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white54,
-                        elevation: 10,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(27),
+                      SizedBox(
+                        width: 10,
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Right(),
-                      child: Image.asset(
-                        'assets/images/right (6).png',
-                        height: 50,
+                      ElevatedButton(
+                        onPressed: () => Right(),
+                        child: Image.asset(
+                          'assets/images/right (6).png',
+                          height: 50,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          elevation: 10,
+                          shape: CircleBorder(),
+                          padding: EdgeInsets.all(27),
+                        ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white54,
-                        elevation: 10,
-                        shape: CircleBorder(),
-                        padding: EdgeInsets.all(27),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ]),
-        ),
-      ],
-    )
-        // ]),
-        // ),
-        );
+            ]),
+          ),
+        ],
+      )
+      // ]),
+      // ),
+    ])));
   }
 
-  Future<int> newAWSConnect() async {
+  newAWSConnect() async {
     client.secure = true;
 
     client.keepAlivePeriod = 20;
@@ -218,7 +221,6 @@ class _MqttclientState extends State<Mqttclient> {
       client.publishMessage(topic, MqttQos.atLeastOnce, maker.payload!);
 
       client.subscribe(topic, MqttQos.atLeastOnce);
-
       client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {
         final rcvmsg = c[0].payload as MqttPublishMessage;
         final pt =
@@ -265,5 +267,9 @@ class _MqttclientState extends State<Mqttclient> {
     final make = MqttClientPayloadBuilder();
     make.addString('B');
     client.publishMessage(topic, MqttQos.atLeastOnce, make.payload!);
+  }
+
+  connect() async {
+    isconnected = newAWSConnect();
   }
 }
