@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:remote_controller/home.dart';
+import 'package:remote_controller/provider.dart';
+import 'stream.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +19,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Mqttclient(),
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => Mqttprovider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Stream(),
+      ),
     );
   }
 }
