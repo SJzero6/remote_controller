@@ -30,7 +30,7 @@ class Mqttprovider with ChangeNotifier {
   set ipdata(data) {
     _ipdata = data;
     Map<String, dynamic> ipdata = json.decode(_ipdata);
-    _ip = ipdata['ip'];
+    _ip = ipdata['ip'] ?? "";
 
     notifyListeners();
   }
@@ -100,7 +100,10 @@ class Mqttprovider with ChangeNotifier {
     return 0;
   }
 
-  publish(msg) {
+  publish(msg) async {
+    if (client.connectionStatus!.state != MqttConnectionState.connected) {
+      await client.connect();
+    }
     const topic = "motor";
     final builder = MqttClientPayloadBuilder();
     builder.addString(msg);

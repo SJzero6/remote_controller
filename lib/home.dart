@@ -49,10 +49,13 @@ class _MqttclientState extends State<Mqttclient>
   InAppWebViewController? webViewController;
   PullToRefreshController? refreshController;
 
+  var sensor = 1;
+
   @override
   Widget build(BuildContext context) {
     Mqttprovider mqttprovider = Provider.of<Mqttprovider>(context);
     Map<String, dynamic> ipdata = json.decode(mqttprovider.ipdata);
+    sensor = ipdata["sensor"] ?? 0;
 
     return Scaffold(
         body: Stack(children: [
@@ -68,10 +71,31 @@ class _MqttclientState extends State<Mqttclient>
                 child: Text('No stream available'),
               ),
       ),
-      // Container(
-      //     child: lpg == null
-      //         ? containered(animation: _animation)
-      //         : containerani(animation: _animation)),
+
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+              //color: Colors.white,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: sensor == 1
+                  ? Text(
+                      "GAS DETECTED",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    )
+                  : Text("NO GAS",
+                      style: TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold))),
+          Container(
+              child: sensor == 1
+                  ? containered(animation: _animation)
+                  : containerani(animation: _animation)),
+        ],
+      ),
 
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,7 +227,7 @@ class containerani extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 690, top: 50),
+      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
       child: FadeTransition(
         opacity: _animation,
         child: Container(
@@ -228,7 +252,7 @@ class containered extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 690, top: 50),
+      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 50),
       child: FadeTransition(
         opacity: _animation,
         child: Container(
