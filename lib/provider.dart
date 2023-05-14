@@ -8,7 +8,7 @@ import "package:mqtt_client/mqtt_client.dart";
 import 'package:mqtt_client/mqtt_server_client.dart';
 
 class Mqttprovider with ChangeNotifier {
-  static const url = 'alq5vzvrt1h0b-ats.iot.ap-northeast-1.amazonaws.com';
+  static const url = 'a3b4ttqshsk2ua-ats.iot.eu-north-1.amazonaws.com';
 
   static const port = 8883;
 
@@ -31,7 +31,7 @@ class Mqttprovider with ChangeNotifier {
     _ipdata = data;
     Map<String, dynamic> ipdata = json.decode(_ipdata);
     _ip = ipdata['ip'] ?? "";
-
+    print("Ip assigned to: " + _ip);
     notifyListeners();
   }
 
@@ -50,14 +50,15 @@ class Mqttprovider with ChangeNotifier {
     final context = SecurityContext.defaultContext;
 
     ByteData crctdata =
-        await rootBundle.load('assets/certifcates/devicectft.crt');
+        await rootBundle.load('assets/certifcates/Dev-certificate.pem.crt');
     context.useCertificateChainBytes(crctdata.buffer.asUint8List());
 
     ByteData authorities =
         await rootBundle.load('assets/certifcates/AmazonRootCA1.pem');
     context.setClientAuthoritiesBytes(authorities.buffer.asUint8List());
 
-    ByteData keybyte = await rootBundle.load('assets/certifcates/prvtkey.key');
+    ByteData keybyte =
+        await rootBundle.load('assets/certifcates/PRI-private.pem.key');
     context.usePrivateKeyBytes(keybyte.buffer.asUint8List());
     client.securityContext = context;
 
@@ -69,17 +70,17 @@ class Mqttprovider with ChangeNotifier {
       print('MQTT client is connecting to AWS');
       await client.connect();
     } on Exception catch (e) {
-      print('MQTT client exception - $e');
+      print('MQTT client exception disconnectiong - $e');
       client.disconnect();
     }
     if (client.connectionStatus!.state == MqttConnectionState.connected) {
       print('AWS iot connection succesfully done');
 
       const topic = 'esp32/cam_2';
-      // final maker = MqttClientPayloadBuilder();
-      // maker.addString('mommu');
+      final maker = MqttClientPayloadBuilder();
+      maker.addString('AWS init APP');
 
-      // client.publishMessage(topic, MqttQos.atLeastOnce, maker.payload!);
+      //client.publishMessage(topic, MqttQos.atLeastOnce, maker.payload!);
 
       client.subscribe(topic, MqttQos.atLeastOnce);
       client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> c) {

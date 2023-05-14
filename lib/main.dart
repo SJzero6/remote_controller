@@ -11,7 +11,7 @@ void main() {
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -27,6 +27,7 @@ class _MqttclientState extends State<Mqttclient>
 
   @override
   void initState() {
+    print("initState ip in the widget is" + widget.link);
     Mqttprovider mqttprovider =
         Provider.of<Mqttprovider>(context, listen: false);
 
@@ -45,7 +46,7 @@ class _MqttclientState extends State<Mqttclient>
     // TODO: implement initState
   }
 
-  var link;
+  //var link;
   InAppWebViewController? webViewController;
   PullToRefreshController? refreshController;
 
@@ -53,7 +54,8 @@ class _MqttclientState extends State<Mqttclient>
 
   @override
   Widget build(BuildContext context) {
-    Mqttprovider mqttprovider = Provider.of<Mqttprovider>(context);
+    Mqttprovider mqttprovider =
+        Provider.of<Mqttprovider>(context, listen: false);
     Map<String, dynamic> ipdata = json.decode(mqttprovider.ipdata);
     sensor = ipdata["sensor"] ?? 0;
 
@@ -62,10 +64,10 @@ class _MqttclientState extends State<Mqttclient>
       Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: link == null
+        child: true
             ? InAppWebView(
                 initialUrlRequest:
-                    URLRequest(url: Uri.parse("http://${widget.link}")),
+                    URLRequest(url: Uri.parse("http://192.168.76.210")),
               )
             : Center(
                 child: Text('No stream available'),
