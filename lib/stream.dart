@@ -16,6 +16,15 @@ class Stream extends StatefulWidget {
 
 class _StreamState extends State<Stream> {
   @override
+  void initState() {
+    Mqttprovider mqttprovider =
+        Provider.of<Mqttprovider>(context, listen: false);
+
+    mqttprovider.newAWSConnect();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Mqttprovider mqttprovider = Provider.of<Mqttprovider>(context);
     String ip = mqttprovider.ip;

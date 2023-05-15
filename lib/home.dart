@@ -28,10 +28,6 @@ class _MqttclientState extends State<Mqttclient>
   @override
   void initState() {
     print("initState ip in the widget is" + widget.link);
-    Mqttprovider mqttprovider =
-        Provider.of<Mqttprovider>(context, listen: false);
-
-    mqttprovider.newAWSConnect();
 
     _animationController = AnimationController(
       vsync: this,
@@ -54,8 +50,7 @@ class _MqttclientState extends State<Mqttclient>
 
   @override
   Widget build(BuildContext context) {
-    Mqttprovider mqttprovider =
-        Provider.of<Mqttprovider>(context, listen: false);
+    Mqttprovider mqttprovider = Provider.of<Mqttprovider>(context);
     Map<String, dynamic> ipdata = json.decode(mqttprovider.ipdata);
     sensor = ipdata["sensor"] ?? 0;
 
@@ -64,10 +59,9 @@ class _MqttclientState extends State<Mqttclient>
       Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: true
+        child: widget.link != ""
             ? InAppWebView(
-                initialUrlRequest:
-                    URLRequest(url: Uri.parse("http://192.168.76.210")),
+                initialUrlRequest: URLRequest(url: Uri.parse(widget.link)),
               )
             : Center(
                 child: Text('No stream available'),
